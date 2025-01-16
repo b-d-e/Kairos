@@ -80,6 +80,10 @@ class GPUScheduler:
             job_logger,
         )
 
+        self.job_logger.log_job_start(
+            job_logger, job, job_index, gpu_slot.gpu_id, gpu_slot.slot_id
+        )
+
         env = os.environ.copy()
         if job.env:
             env.update(job.env)
@@ -120,6 +124,9 @@ class GPUScheduler:
         }
         job_logger.info(
             f"Job completed: {json.dumps(completion_info, indent=2)}"
+        )
+        self.job_logger.log_job_completion(
+            job_logger, job, job_index, gpu_slot.gpu_id, return_code
         )
 
         return return_code

@@ -5,7 +5,7 @@
 [![precommit](https://github.com/b-d-e/kairos/actions/workflows/precommit.yml/badge.svg)](https://github.com/b-d-e/Kairos/actions/workflows/precommit.yml)
 [![pytest](https://github.com/b-d-e/kairos/actions/workflows/tests.yml/badge.svg)](https://github.com/b-d-e/Kairos/actions/workflows/tests.yml)
 
-A Python package for scheduling and running multiple jobs across a local GPU cluster.
+A Python package for queueing and running multiple jobs across a local GPU cluster.
 
 Think of it as a local, single-user equivalent to SLURM.
 

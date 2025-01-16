@@ -47,8 +47,10 @@ class GPUScheduler:
         self.completed_jobs = 0
 
         self.logger.info(
-            f"Initialized GPU Scheduler with {n_gpus} \
-                GPUs and {jobs_per_gpu} jobs per GPU"
+            (
+                f"Initialized GPU Scheduler with {n_gpus}",
+                f"GPUs and {jobs_per_gpu} jobs per GPU",
+            )
         )
         self.logger.info(f"Log directory: {self.log_dir}")
 
@@ -126,8 +128,10 @@ class GPUScheduler:
         """Run multiple jobs across available GPU slots."""
         total_slots = len(self.gpu_slots)
         self.logger.info(
-            f"Starting {len(jobs)} jobs across {self.n_gpus} \
-                GPUs ({self.jobs_per_gpu} jobs per GPU)"
+            (
+                f"Starting {len(jobs)} jobs across {self.n_gpus}",
+                f"GPUs ({self.jobs_per_gpu} jobs per GPU)",
+            )
         )
 
         job_queue = Queue()

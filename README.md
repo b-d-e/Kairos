@@ -16,6 +16,8 @@ The scheduler monitors GPU memory usage and automatically manages job distributi
 
 I'd like to implemenet a more rigorous version of this in Rust at some point in future, possibly with a persistent queue on disk.
 
+It would also be nice to run as a service - currently have to use `tmux` or equivilant to leave running in background.
+
 ## Features
 
 - 🎮 Support for multiple GPUs with configurable jobs per GPU

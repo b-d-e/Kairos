@@ -132,7 +132,15 @@ class GPUScheduler:
         return return_code
 
     def run_jobs(self, jobs: List[Job]) -> List[int]:
-        """Run multiple jobs across available GPU slots."""
+        """Run multiple jobs across available GPU slots.
+
+        Args:
+            jobs: List of Job objects to execute
+
+        Returns:
+            List[int]: Status code for each job
+            (0 for success, non-zero for failure)
+        """
         total_slots = len(self.gpu_slots)
         self.logger.info(
             f"Starting {len(jobs)} jobs across {self.n_gpus} "
@@ -147,6 +155,7 @@ class GPUScheduler:
         for slot in self.gpu_slots:
             slot_queue.put(slot)
 
+        # Initialize results list with None values
         results = [None] * len(jobs)
         active_jobs = set()
         job_lock = threading.Lock()
@@ -184,12 +193,22 @@ class GPUScheduler:
         ) as executor:
             futures = []
 
+            # Queue up all jobs
             for i, job in enumerate(jobs):
                 job_queue.put((i, job))
 
+            # Start workers
             for _ in range(total_slots):
                 futures.append(executor.submit(worker))
 
+            # Wait for all workers to complete
             concurrent.futures.wait(futures)
 
             self.logger.info("\nAll jobs completed!")
+
+            # Ensure all jobs have a result
+            assert all(
+                result is not None for result in results
+            ), "Some jobs did not complete"
+
+            return results

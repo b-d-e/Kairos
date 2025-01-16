@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "kairos"
 description = "A flexible job scheduler for running multiple jobs across multiple GPUs"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 keywords = ["gpu", "scheduler", "deep-learning"]
 license = { file = "LICENSE" }
 classifiers = [

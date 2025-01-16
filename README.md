@@ -188,7 +188,7 @@ Memory monitoring features:
 
 ## Requirements
 
-- Python 3.8+
+- Python 3.9+
 - NVIDIA GPUs with CUDA drivers
 - `nvidia-smi` available in PATH
 

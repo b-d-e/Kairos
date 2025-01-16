@@ -116,10 +116,8 @@ class JobLogger:
 
         # Log to scheduler log (minimal info)
         self.logger.info(
-            (
-                f"Job {job_index} ({completion_info['job_name']}) completed ",
-                f"with status: {completion_info['status']}",
-            )
+            f"Job {job_index} ({completion_info['job_name']}) completed "
+            f"with status: {completion_info['status']}"
         )
 
         # Log full details to job log

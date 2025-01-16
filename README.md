@@ -10,7 +10,6 @@ Think of it as a local, single-user equivalent to SLURM.
 The scheduler monitors GPU memory usage and automatically manages job distribution to make efficient use of GPU resources.
 
 ![Kairos Animation](kairos.svg)
-> all credit to claude for this animation
 
 ## Roadmap
 

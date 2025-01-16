@@ -1,4 +1,4 @@
-# [Kairos](https://en.wikipedia.org/wiki/Kairos): GPU Job Scheduler
+# [kairos](https://en.wikipedia.org/wiki/Kairos): GPU Job Scheduler
 
 <img src="kairos.svg" width="200" height="200" align="right" style="margin-left: 10px">
 

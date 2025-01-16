@@ -142,6 +142,7 @@ class GPUScheduler:
         job_queue = Queue()
         slot_queue = Queue()
         self.total_jobs = len(jobs)
+        self.job_logger.total_jobs = self.total_jobs
 
         for slot in self.gpu_slots:
             slot_queue.put(slot)
@@ -192,11 +193,3 @@ class GPUScheduler:
             concurrent.futures.wait(futures)
 
             self.logger.info("\nAll jobs completed!")
-            self.logger.info("Results summary:")
-            for i, result in enumerate(results):
-                status = (
-                    "Success" if result == 0 else f"Failed (code {result})"
-                )
-                self.logger.info(f"Job {i}: {status}")
-
-            return results

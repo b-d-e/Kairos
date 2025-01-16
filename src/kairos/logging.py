@@ -16,6 +16,7 @@ class JobLogger:
         """Initialise log directory."""
         self.log_dir = log_dir
         self.setup_main_logger()
+        self.total_jobs = 0
 
     def setup_main_logger(self):
         """Set up the main scheduler logger for scheduling events only."""
@@ -88,8 +89,8 @@ class JobLogger:
 
         # Log to scheduler log (minimal info)
         self.logger.info(
-            f"Starting job {job_index} ({job_info['job_name']}) on\
-                GPU {gpu_id} slot {slot_id}"
+            f"Starting job {job_index}/{self.total_jobs} "
+            f"({job_info['job_name']}) on GPU {gpu_id} slot {slot_id}"
         )
 
         # Log full details to job log
@@ -116,7 +117,8 @@ class JobLogger:
 
         # Log to scheduler log (minimal info)
         self.logger.info(
-            f"Job {job_index} ({completion_info['job_name']}) completed "
+            f"Job {job_index}/{self.total_jobs} "
+            f"({completion_info['job_name']}) completed "
             f"with status: {completion_info['status']}"
         )
 

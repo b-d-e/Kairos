@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="neonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff00ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00ffff;stop-opacity:1" />
+    </linearGradient>
+
+    <pattern id="circuitPattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M5,20 h30 M20,5 v30 M35,20 h5 M20,35 v5 M20,0 v5"
+            stroke="#00ffff"
+            stroke-width="0.5"
+            opacity="0.3"/>
+    </pattern>
+
+    <filter id="neonGlow">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur"/>
+      <feComposite in="blur" in2="SourceGraphic" operator="over"/>
+    </filter>
+  </defs>
+
+  <circle cx="100" cy="100" r="90" fill="#120458"/>
+  <circle cx="100" cy="100" r="90" fill="url(#circuitPattern)"/>
+
+  <g opacity="0.1">
+    <rect x="70" y="85" width="60" height="5" fill="#ff00ff" transform="skewX(20)"/>
+    <rect x="65" y="105" width="70" height="3" fill="#00ffff" transform="skewX(-15)"/>
+    <rect x="75" y="115" width="50" height="4" fill="#ff00ff" transform="skewX(10)"/>
+  </g>
+
+  <g transform="translate(100,100)">
+    <g fill="none" stroke="url(#neonGradient)" stroke-width="1.5" filter="url(#neonGlow)">
+      <rect x="-35" y="-35" width="20" height="20"/>
+      <rect x="15" y="-35" width="20" height="20"/>
+      <rect x="-35" y="15" width="20" height="20"/>
+      <rect x="15" y="15" width="20" height="20"/>
+    </g>
+  </g>
+
+  <g transform="translate(100,100)">
+    <path d="M0,-70 A70,70 0 1,1 0,70 A70,70 0 1,1 0,-70"
+          fill="none"
+          stroke="url(#neonGradient)"
+          stroke-width="2"
+          stroke-dasharray="1,5"
+          opacity="0.7"
+          filter="url(#neonGlow)"/>
+  </g>
+
+  <g transform="translate(100,100)">
+    <line x1="0" y1="-35" x2="0" y2="35"
+          stroke="#8890A0"
+          stroke-width="6"
+          stroke-linecap="round"
+          opacity="0.5"
+          filter="url(#neonGlow)"/>
+
+    <line x1="0" y1="0" x2="25" y2="-25"
+          stroke="#ff00ff"
+          stroke-width="6"
+          stroke-linecap="round"
+          filter="url(#neonGlow)"/>
+
+    <line x1="0" y1="0" x2="25" y2="25"
+          stroke="#00ffff"
+          stroke-width="6"
+          stroke-linecap="round"
+          filter="url(#neonGlow)"/>
+  </g>
+
+  <circle cx="100" cy="100" r="4" fill="#ff00ff" filter="url(#neonGlow)"/>
+
+  <g transform="translate(100,100)" fill="#00ffff" opacity="0.3">
+    <text x="24" y="-72" font-family="monospace" font-size="8">000</text>
+    <text x="65" y="-32" font-family="monospace" font-size="8">001</text>
+    <text x="65" y="38" font-family="monospace" font-size="8">010</text>
+    <text x="24" y="78" font-family="monospace" font-size="8">011</text>
+    <text x="-38" y="78" font-family="monospace" font-size="8">100</text>
+    <text x="-80" y="38" font-family="monospace" font-size="8">101</text>
+    <text x="-80" y="-32" font-family="monospace" font-size="8">110</text>
+    <text x="-38" y="-72" font-family="monospace" font-size="8">111</text>
+  </g>
+</svg>

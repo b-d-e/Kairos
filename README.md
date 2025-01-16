@@ -1,14 +1,13 @@
+<img src="kairos.svg" width="200" height="200" align="right" style="margin-left: 10px">
+
 # [Kairos](https://en.wikipedia.org/wiki/Kairos): GPU Job Scheduler
 
-A simple Python utility for scheduling and running multiple jobs across a local GPU cluster.
 
-Think of it as a a local, single-user equivilant to SLURM.
+A Python package for scheduling and running multiple jobs across a local GPU cluster.
+
+Think of it as a local, single-user equivalent to SLURM.
 
 The scheduler monitors GPU memory usage and automatically manages job distribution to make efficient use of GPU resources.
-
-> N.b. This is extremely unrigorously tested and so shouldn't be trusted for anything too mission critical right now!
-
->In the short term I will add packaging and a test suite. Long term, I'd like to rewrite it in Rust.
 
 ## Features
 
@@ -17,7 +16,8 @@ The scheduler monitors GPU memory usage and automatically manages job distributi
 - 🔄 Automatic job queuing and distribution
 - 🐍 Virtual environment support
 - 🌍 Custom environment variables per job
-- 📝 Detailed logging with configurable levels
+- 📝 Structured logging with rotation and configurable levels
+- 🧪 Comprehensive test suite with CPU and GPU tests
 - 🚀 Easy to integrate into existing projects
 
 ## Installation
@@ -28,20 +28,34 @@ git clone https://github.com/b-d-e/kairos.git
 cd kairos
 ```
 
-2. Verify you have CUDA drivers installed and accessible (only tested on CUDA v12):
+2. Verify you have CUDA drivers installed and accessible (tested on CUDA v12):
 ```bash
 nvidia-smi
 ```
 
-That's it. Should work with vanilla Python modules.
+3. Create and activate a virtual environment (recommended):
+```bash
+python -m venv .venv
+source .venv/bin/activate  # Unix/macOS
+# or
+.venv\Scripts\activate     # Windows
+```
+
+4. Install the package:
+```bash
+# For basic installation
+pip install .
+
+# For development (includes testing tools)
+pip install -e ".[dev]"
+```
 
 ## Quick Start
 
-Modular usage
 ```python
-from gpu_scheduler import GPUScheduler, Job
+from kairos import GPUScheduler, Job
 
-# Initialise scheduler with 4 GPUs, 2 jobs per GPU
+# Initialize scheduler with 4 GPUs, 2 jobs per GPU
 scheduler = GPUScheduler(n_gpus=4, jobs_per_gpu=2)
 
 # Define your jobs
@@ -49,11 +63,13 @@ jobs = [
     Job(
         command="python train.py --config config1.yaml",
         venv_path=".venv",
-        working_dir="/path/to/project"
+        working_dir="/path/to/project",
+        job_name="train_model1"  # Optional name for better log identification
     ),
     Job(
         command="python train.py --config config2.yaml",
-        env={"PYTORCH_CUDA_ALLOC_CONF": "max_split_size_mb:5000"}
+        env={"PYTORCH_CUDA_ALLOC_CONF": "max_split_size_mb:5000"},
+        job_name="train_model2"
     )
 ]
 
@@ -61,22 +77,59 @@ jobs = [
 results = scheduler.run_jobs(jobs)
 ```
 
-## Command Line Interface
+## Package Structure
 
-The scheduler can be run directly from the command line:
-
-```bash
-python gpu_scheduler.py --gpus 4 --jobs-per-gpu 2 --memory-threshold 49 --check-interval 5
+```
+kairos/
+├── src/
+│   └── kairos/
+│       ├── __init__.py
+│       ├── models.py        # Data models (Job, GPUSlot)
+│       ├── logging.py       # Logging functionality
+│       ├── scheduler.py     # Main scheduler implementation
+│       └── gpu.py       # GPU utilities
+├── tests/
+│   ├── __init__.py
+│   ├── conftest.py         # Test fixtures
+│   ├── test_scheduler_cpu.py
+│   └── test_scheduler_gpu.py
+└── pyproject.toml          # Package configuration
 ```
 
-You'll need to hardcode your experiment commands.
+## Development
 
-Available arguments:
-- `--gpus`: Number of GPUs to use (default: 1)
-- `--jobs-per-gpu`: Number of concurrent jobs per GPU (default: 1)
-- `--memory-threshold`: GPU memory threshold percentage (default: 50.0)
-- `--check-interval`: Seconds between memory checks (default: 5.0)
-- `--log-level`: Logging level (DEBUG, INFO, WARNING, ERROR) (default: INFO)
+### Setting up the development environment
+
+```bash
+# Clone the repository
+git clone https://github.com/b-d-e/kairos.git
+cd kairos
+
+# Create and activate virtual environment
+python -m venv .venv
+source .venv/bin/activate  # Unix/macOS
+# or
+.venv\Scripts\activate     # Windows
+
+# Install development dependencies
+pip install -e ".[dev]"
+
+# Install pre-commit hooks
+pre-commit install
+```
+
+### Running Tests
+
+```bash
+# Run CPU-only tests
+pytest -v -m "cpu"
+
+# Run GPU tests (requires CUDA)
+pytest -v -m "gpu"
+
+# Run all tests with coverage
+pytest -v --cov=kairos
+```
 
 ## Detailed Usage
 
@@ -88,7 +141,8 @@ Job(
     command="your_command",           # Required: Command to run
     env={"KEY": "VALUE"},            # Optional: Additional environment variables
     venv_path="/path/to/venv",       # Optional: Virtual environment path
-    working_dir="/path/to/workdir"   # Optional: Working directory for the job
+    working_dir="/path/to/workdir",  # Optional: Working directory for the job
+    job_name="my_job"                # Optional: Name for log identification
 )
 ```
 
@@ -100,35 +154,21 @@ scheduler = GPUScheduler(
     jobs_per_gpu=2,          # Jobs per GPU
     memory_threshold=50.0,   # Wait until GPU memory is below this percentage
     check_interval=5.0,      # Seconds between memory checks
-    log_level="INFO"         # Logging level
+    log_dir="logs"           # Directory for log files
 )
 ```
 
-### Running Jobs with Virtual Environment
+## Logging
 
-```python
-jobs = [
-    Job(
-        command="python train.py --model resnet50",
-        venv_path=".venv",
-        working_dir="/path/to/project"
-    )
-]
-```
+The scheduler now uses a structured logging system with:
+- Rotating log files with size limits
+- Separate log files for each job
+- JSON-formatted metadata
+- Configurable log levels
 
-### Custom Environment Variables
-
-```python
-jobs = [
-    Job(
-        command="python train.py",
-        env={
-            "PYTORCH_CUDA_ALLOC_CONF": "max_split_size_mb:512",
-            "MY_CUSTOM_VAR": "value"
-        }
-    )
-]
-```
+Log files are organized as:
+- `logs/kairos.log` - Main scheduler log (with rotation)
+- `logs/<job_name>_<timestamp>.log` - Individual job logs
 
 ## Memory Management
 
@@ -136,38 +176,17 @@ The scheduler monitors GPU memory usage and only starts new jobs when:
 1. A GPU slot is available
 2. The GPU's memory usage is below the specified threshold
 
-For example, with default settings:
-- Memory threshold: 50%
-- The scheduler will wait until GPU memory usage drops below 50% before starting a new job
-- Memory is checked every 5 seconds (configurable)
-
-## Logging
-
-The scheduler provides detailed logging about job execution:
-```python
-scheduler = GPUScheduler(log_level="DEBUG")  # For most detailed logging
-```
-
-Log levels:
-- `DEBUG`: Detailed information about memory usage and job execution
-- `INFO`: General progress and status updates
-- `WARNING`: Warning messages
-- `ERROR`: Error messages only
-
-## Error Handling
-
-The scheduler provides robust error handling:
-- Captures and logs process output
-- Reports GPU memory monitoring errors
-- Handles job failures gracefully
-- Returns process exit codes for all jobs
+Memory monitoring features:
+- Configurable memory threshold (default: 50%)
+- Configurable check interval (default: 5 seconds)
+- Proper error handling for GPU queries
+- Detailed memory usage logging
 
 ## Requirements
 
-- Python 3.9+
-- NVIDIA GPUs
-- `nvidia-smi` / CUDA drivers
-
+- Python 3.8+
+- NVIDIA GPUs with CUDA drivers
+- `nvidia-smi` available in PATH
 
 ## License
 

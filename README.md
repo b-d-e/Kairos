@@ -2,8 +2,8 @@
 
 <img src="kairos.svg" width="200" height="200" align="right" style="margin-left: 10px">
 
-![](https://github.com/b-d-e/kairos/actions/workflows/precommit.yml/badge.svg)
-![](https://github.com/b-d-e/kairos/actions/workflows/tests.yml/badge.svg)
+[![precommit](https://github.com/b-d-e/kairos/actions/workflows/precommit.yml/badge.svg)](https://github.com/b-d-e/Kairos/actions/workflows/precommit.yml)
+[![pytest](https://github.com/b-d-e/kairos/actions/workflows/tests.yml/badge.svg)](https://github.com/b-d-e/Kairos/actions/workflows/tests.yml)
 
 A Python package for scheduling and running multiple jobs across a local GPU cluster.
 

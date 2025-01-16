@@ -1,7 +1,5 @@
 # [kairos](https://en.wikipedia.org/wiki/Kairos): GPU Job Scheduler
 
-<img src="kairos.svg" width="200" height="200" align="right" style="margin-left: 10px">
-
 [![precommit](https://github.com/b-d-e/kairos/actions/workflows/precommit.yml/badge.svg)](https://github.com/b-d-e/Kairos/actions/workflows/precommit.yml)
 [![pytest](https://github.com/b-d-e/kairos/actions/workflows/tests.yml/badge.svg)](https://github.com/b-d-e/Kairos/actions/workflows/tests.yml)
 
@@ -11,6 +9,8 @@ Think of it as a local, single-user equivalent to SLURM.
 
 The scheduler monitors GPU memory usage and automatically manages job distribution to make efficient use of GPU resources.
 
+![Kairos Animation](kairos.svg)
+> all credit to claude for this animation
 
 ## Roadmap
 

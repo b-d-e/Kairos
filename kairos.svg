@@ -1,90 +1,245 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
+  <!-- Definitions -->
   <defs>
-    <linearGradient id="neonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#ff00ff;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#00ffff;stop-opacity:1" />
-    </linearGradient>
+    <!-- Previous definitions -->
+    <path id="path1" d="M 100 100 C 150 80, 200 90, 260 60" fill="none"/>
+    <path id="path2" d="M 100 100 C 160 110, 200 100, 260 85" fill="none"/>
+    <path id="path3" d="M 100 100 C 170 120, 210 110, 260 110" fill="none"/>
 
-    <pattern id="circuitPattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M5,20 h30 M20,5 v30 M35,20 h5 M20,35 v5 M20,0 v5"
-            stroke="#00ffff"
-            stroke-width="0.5"
-            opacity="0.3"/>
-    </pattern>
-
-    <filter id="neonGlow">
+    <!-- Updated glow filters -->
+    <filter id="neon-pink">
       <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur"/>
-      <feComposite in="blur" in2="SourceGraphic" operator="over"/>
+      <feFlood flood-color="#ff69b4" flood-opacity="0.5" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="blur-color"/>
+      <feMerge>
+        <feMergeNode in="blur-color"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
     </filter>
+
+    <filter id="neon-blue">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="blur"/>
+      <feFlood flood-color="#00bfff" flood-opacity="0.5" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="blur-color"/>
+      <feMerge>
+        <feMergeNode in="blur-color"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Animation for job arrival flash -->
+    <circle id="particle-template" r="3" fill="#00bfff" filter="url(#neon-blue)">
+      <animate attributeName="opacity"
+               values="0;1;1;0"
+               dur="2s"
+               repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Circuit Pattern -->
+    <pattern id="circuit" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 0 20 H 40 M 20 0 V 40" stroke="#333" stroke-width="0.5"/>
+      <circle cx="20" cy="20" r="2" fill="#444"/>
+    </pattern>
   </defs>
 
-  <circle cx="100" cy="100" r="90" fill="#120458"/>
-  <circle cx="100" cy="100" r="90" fill="url(#circuitPattern)"/>
+  <!-- Background -->
+  <rect width="400" height="200" fill="#0a0a0f"/>
+  <rect width="400" height="200" fill="url(#circuit)" opacity="0.3"/>
 
-  <g opacity="0.1">
-    <rect x="70" y="85" width="60" height="5" fill="#ff00ff" transform="skewX(20)"/>
-    <rect x="65" y="105" width="70" height="3" fill="#00ffff" transform="skewX(-15)"/>
-    <rect x="75" y="115" width="50" height="4" fill="#ff00ff" transform="skewX(10)"/>
-  </g>
+  <!-- GPU Grid Pattern -->
+  <g transform="translate(250, 40)">
 
-  <g transform="translate(100,100)">
-    <g fill="none" stroke="url(#neonGradient)" stroke-width="1.5" filter="url(#neonGlow)">
-      <rect x="-35" y="-35" width="20" height="20"/>
-      <rect x="15" y="-35" width="20" height="20"/>
-      <rect x="-35" y="15" width="20" height="20"/>
-      <rect x="15" y="15" width="20" height="20"/>
+    <rect width="100" height="120" fill="#1a1a1a" rx="5"/>
+    <g fill="none" stroke="#ff69b4" stroke-width="1" filter="url(#neon-pink)">
+      <rect x="10" y="10" width="80" height="100" rx="2"/>
+      <line x1="10" y1="35" x2="90" y2="35"/>
+      <line x1="10" y1="60" x2="90" y2="60"/>
+      <line x1="10" y1="85" x2="90" y2="85"/>
+      <line x1="37" y1="10" x2="37" y2="110"/>
+      <line x1="65" y1="10" x2="65" y2="110"/>
+    </g>
+      <text x="36.5" y="7" class="gpu-name" fill="#ff69b4" font-family="monospace" font-size="7">
+        Cluster
+      </text>
+
+    <!-- GPU Names with Random Flashing -->
+    <g>
+      <!-- Row 1 -->
+      <text x="11" y="25" class="gpu-name" fill="#ff69b4" font-family="monospace" font-size="5.75">
+        GPU0000
+        <animate attributeName="fill" values="#ff69b4;#00bfff;#ff69b4" dur="0.5s" begin="1.1s;6.2s;12.7s;18.9s" repeatCount="1"/>
+      </text>
+      <text x="39" y="25" class="gpu-name" fill="#ff69b4" font-family="monospace" font-size="5.75">
+        GPU0001
+        <animate attributeName="fill" values="#ff69b4;#00bfff;#ff69b4" dur="0.5s" begin="2.3s;8.1s;14.2s;19.5s" repeatCount="1"/>
+      </text>
+      <text x="65.5" y="25" class="gpu-name" fill="#ff69b4" font-family="monospace" font-size="5.75">
+        GPU0010
+        <animate attributeName="fill" values="#ff69b4;#00bfff;#ff69b4" dur="0.5s" begin="3.7s;7.9s;15.8s;20.1s" repeatCount="1"/>
+      </text>
+
+      <!-- Row 2 -->
+      <text x="11" y="50" class="gpu-name" fill="#ff69b4" font-family="monospace" font-size="5.75">
+        GPU0011
+        <animate attributeName="fill" values="#ff69b4;#00bfff;#ff69b4" dur="0.5s" begin="1.8s;9.3s;13.5s;17.8s" repeatCount="1"/>
+      </text>
+      <text x="39" y="50" class="gpu-name" fill="#ff69b4" font-family="monospace" font-size="5.75">
+        GPU0100
+        <animate attributeName="fill" values="#ff69b4;#00bfff;#ff69b4" dur="0.5s" begin="4.2s;10.5s;16.1s;21.3s" repeatCount="1"/>
+      </text>
+      <text x="65.5" y="50" class="gpu-name" fill="#ff69b4" font-family="monospace" font-size="5.75">
+        GPU0101
+        <animate attributeName="fill" values="#ff69b4;#00bfff;#ff69b4" dur="0.5s" begin="2.9s;8.7s;14.9s;19.8s" repeatCount="1"/>
+      </text>
+
+      <!-- Row 3 -->
+      <text x="11" y="75" class="gpu-name" fill="#ff69b4" font-family="monospace" font-size="5.75">
+        GPU0110
+        <animate attributeName="fill" values="#ff69b4;#00bfff;#ff69b4" dur="0.5s" begin="5.5s;11.2s;15.7s;20.5s" repeatCount="1"/>
+      </text>
+      <text x="39" y="75" class="gpu-name" fill="#ff69b4" font-family="monospace" font-size="5.75">
+        GPU0111
+        <animate attributeName="fill" values="#ff69b4;#00bfff;#ff69b4" dur="0.5s" begin="3.3s;9.8s;16.4s;21.7s" repeatCount="1"/>
+      </text>
+      <text x="65.5" y="75" class="gpu-name" fill="#ff69b4" font-family="monospace" font-size="5.75">
+        GPU1000
+        <animate attributeName="fill" values="#ff69b4;#00bfff;#ff69b4" dur="0.5s" begin="1.5s;7.4s;13.8s;18.2s" repeatCount="1"/>
+      </text>
+
+      <!-- Row 4 -->
+      <text x="11" y="100" class="gpu-name" fill="#ff69b4" font-family="monospace" font-size="5.75">
+        GPU1001
+        <animate attributeName="fill" values="#ff69b4;#00bfff;#ff69b4" dur="0.5s" begin="4.8s;10.9s;15.3s;20.8s" repeatCount="1"/>
+      </text>
+      <text x="39" y="100" class="gpu-name" fill="#ff69b4" font-family="monospace" font-size="5.75">
+        GPU1010
+        <animate attributeName="fill" values="#ff69b4;#00bfff;#ff69b4" dur="0.5s" begin="2.6s;8.4s;14.6s;19.2s" repeatCount="1"/>
+      </text>
+      <text x="65.5" y="100" class="gpu-name" fill="#ff69b4" font-family="monospace" font-size="5.75">
+        GPU1011
+        <animate attributeName="fill" values="#ff69b4;#00bfff;#ff69b4" dur="0.5s" begin="3.9s;9.1s;16.7s;21.4s" repeatCount="1"/>
+      </text>
     </g>
   </g>
 
-  <g transform="translate(100,100)">
-    <path d="M0,-70 A70,70 0 1,1 0,70 A70,70 0 1,1 0,-70"
-          fill="none"
-          stroke="url(#neonGradient)"
-          stroke-width="2"
-          stroke-dasharray="1,5"
-          opacity="0.7"
-          filter="url(#neonGlow)"/>
-  </g>
-
-
-
-    <g transform="translate(100,100)">
-    <line x1="-2" y1="-30" x2="2" y2="30"
-          stroke="grey"
-          stroke-width="6"
-          opacity="0.6"
-          filter="url(#neonGlow)"
-          />
+  <!-- Clock Face -->
+  <g transform="translate(100, 100)">
+    <circle cx="0" cy="0" r="60" fill="none" stroke="#4a90e2" stroke-width="4" opacity="0.3"/>
+    <circle cx="0" cy="0" r="62" fill="none" stroke="#ff69b4" stroke-width="1" filter="url(#neon-pink)"/>
+    <g stroke="#4a90e2" stroke-width="2" stroke-linecap="round">
+      <line x1="0" y1="-55" x2="0" y2="-45"/>
+      <line x1="55" y1="0" x2="45" y2="0"/>
+      <line x1="0" y1="55" x2="0" y2="45"/>
+      <line x1="-55" y1="0" x2="-45" y2="0"/>
     </g>
-
-  <g transform="translate(100,100)">
-
-    <line x1="0" y1="0" x2="25" y2="-25"
-          stroke="#ff00ff"
-          stroke-width="6"
-          stroke-linecap="round"
-          filter="url(#neonGlow)"/>
-
-    <line x1="0" y1="0" x2="25" y2="25"
-          stroke="#00ffff"
-          stroke-width="6"
-          stroke-linecap="round"
-          filter="url(#neonGlow)"/>
+    <g>
+      <line x1="0" y1="0" x2="30" y2="-30" stroke="#ff69b4" stroke-width="3" stroke-linecap="round" filter="url(#neon-pink)">
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          from="0 0 0"
+          to="360 0 0"
+          dur="3s"
+          repeatCount="indefinite"/>
+      </line>
+      <line x1="0" y1="0" x2="-20" y2="20" stroke="#ff69b4" stroke-width="3" stroke-linecap="round" filter="url(#neon-pink)">
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          from="0 0 0"
+          to="360 0 0"
+          dur="10s"
+          repeatCount="indefinite"/>
+      </line>
+    </g>
+    <circle cx="0" cy="0" r="5" fill="#ff69b4" filter="url(#neon-pink)"/>
   </g>
 
+  <!-- Animated Particles -->
+  <g>
+    <!-- Path 1 Particles -->
+    <use href="#particle-template">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="0s">
+        <mpath href="#path1"/>
+      </animateMotion>
+    </use>
+    <use href="#particle-template">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="0.3s">
+        <mpath href="#path1"/>
+      </animateMotion>
+    </use>
+    <use href="#particle-template">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="0.6s">
+        <mpath href="#path1"/>
+      </animateMotion>
+    </use>
+    <use href="#particle-template">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="0.9s">
+        <mpath href="#path1"/>
+      </animateMotion>
+    </use>
+    <use href="#particle-template">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="1.2s">
+        <mpath href="#path1"/>
+      </animateMotion>
+    </use>
 
+    <!-- Path 2 Particles -->
+    <use href="#particle-template">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="0.1s">
+        <mpath href="#path2"/>
+      </animateMotion>
+    </use>
+    <use href="#particle-template">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="0.4s">
+        <mpath href="#path2"/>
+      </animateMotion>
+    </use>
+    <use href="#particle-template">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="0.7s">
+        <mpath href="#path2"/>
+      </animateMotion>
+    </use>
+    <use href="#particle-template">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="1.0s">
+        <mpath href="#path2"/>
+      </animateMotion>
+    </use>
+    <use href="#particle-template">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="1.3s">
+        <mpath href="#path2"/>
+      </animateMotion>
+    </use>
 
-
-  <circle cx="100" cy="100" r="4" fill="#ff00ff" filter="url(#neonGlow)"/>
-
-  <g transform="translate(100,100)" fill="#00ffff" opacity="0.3">
-    <text x="24" y="-72" font-family="monospace" font-size="8">000</text>
-    <text x="65" y="-32" font-family="monospace" font-size="8">001</text>
-    <text x="65" y="38" font-family="monospace" font-size="8">010</text>
-    <text x="24" y="78" font-family="monospace" font-size="8">011</text>
-    <text x="-38" y="78" font-family="monospace" font-size="8">100</text>
-    <text x="-80" y="38" font-family="monospace" font-size="8">101</text>
-    <text x="-80" y="-32" font-family="monospace" font-size="8">110</text>
-    <text x="-38" y="-72" font-family="monospace" font-size="8">111</text>
+    <!-- Path 3 Particles -->
+    <use href="#particle-template">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="0.2s">
+        <mpath href="#path3"/>
+      </animateMotion>
+    </use>
+    <use href="#particle-template">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="0.5s">
+        <mpath href="#path3"/>
+      </animateMotion>
+    </use>
+    <use href="#particle-template">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="0.8s">
+        <mpath href="#path3"/>
+      </animateMotion>
+    </use>
+    <use href="#particle-template">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="1.1s">
+        <mpath href="#path3"/>
+      </animateMotion>
+    </use>
+    <use href="#particle-template">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="1.4s">
+        <mpath href="#path3"/>
+      </animateMotion>
+    </use>
   </g>
+
+  <!-- Project Name -->
+  <text x="200" y="180" fill="#ff69b4" font-family="monospace" font-size="28" text-anchor="middle" font-weight="bold" filter="url(#neon-pink)">KAIROS</text>
+  <text x="200" y="190" fill="#ff69b4" font-family="monospace" font-size="8" text-anchor="middle" opacity="0.7">GPU QUEUEING ENGINE</text>
 </svg>

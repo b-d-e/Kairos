@@ -46,13 +46,18 @@
           filter="url(#neonGlow)"/>
   </g>
 
-  <g transform="translate(100,100)">
-    <line x1="0" y1="-35" x2="0" y2="35"
-          stroke="#8890A0"
+
+
+    <g transform="translate(100,100)">
+    <line x1="-2" y1="-30" x2="2" y2="30"
+          stroke="grey"
           stroke-width="6"
-          stroke-linecap="round"
-          opacity="0.5"
-          filter="url(#neonGlow)"/>
+          opacity="0.6"
+          filter="url(#neonGlow)"
+          />
+    </g>
+
+  <g transform="translate(100,100)">
 
     <line x1="0" y1="0" x2="25" y2="-25"
           stroke="#ff00ff"
@@ -66,6 +71,9 @@
           stroke-linecap="round"
           filter="url(#neonGlow)"/>
   </g>
+
+
+
 
   <circle cx="100" cy="100" r="4" fill="#ff00ff" filter="url(#neonGlow)"/>
 

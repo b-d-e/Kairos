@@ -9,6 +9,10 @@ Think of it as a local, single-user equivalent to SLURM.
 
 The scheduler monitors GPU memory usage and automatically manages job distribution to make efficient use of GPU resources.
 
+## Roadmap
+
+I'd like to implemenet a more rigorous version of this in Rust at some point in future, possibly with a persistent queue on disk.
+
 ## Features
 
 - 🎮 Support for multiple GPUs with configurable jobs per GPU
@@ -58,7 +62,7 @@ from kairos import GPUScheduler, Job
 # Initialise scheduler with 4 GPUs, 2 jobs per GPU
 scheduler = GPUScheduler(n_gpus=4, jobs_per_gpu=2)
 
-# Define your jobs
+# Define your jobs - in pracitce, probably dynamically
 jobs = [
     Job(
         command="python train.py --config config1.yaml",

@@ -137,7 +137,7 @@
           type="rotate"
           from="0 0 0"
           to="360 0 0"
-          dur="3s"
+          dur="1s"
           repeatCount="indefinite"/>
       </line>
       <line x1="0" y1="0" x2="-20" y2="20" stroke="#ff69b4" stroke-width="3" stroke-linecap="round" filter="url(#neon-pink)">
@@ -146,7 +146,7 @@
           type="rotate"
           from="0 0 0"
           to="360 0 0"
-          dur="10s"
+          dur="12s"
           repeatCount="indefinite"/>
       </line>
     </g>

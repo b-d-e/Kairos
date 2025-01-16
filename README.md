@@ -15,9 +15,9 @@ The scheduler monitors GPU memory usage and automatically manages job distributi
 - 📊 GPU memory limits with configurable thresholds
 - 🔄 Automatic job queuing and distribution
 - 🐍 Virtual environment support
-- 🌍 Custom environment variables per job
+- 🌍 Custom envfironment variables per job
 - 📝 Structured logging with rotation and configurable levels
-- 🧪 Comprehensive test suite with CPU and GPU tests
+- 🧪 Comprehensive test suite with GPU and CPU (mock) tests
 - 🚀 Easy to integrate into existing projects
 
 ## Installation
@@ -55,7 +55,7 @@ pip install -e ".[dev]"
 ```python
 from kairos import GPUScheduler, Job
 
-# Initialize scheduler with 4 GPUs, 2 jobs per GPU
+# Initialise scheduler with 4 GPUs, 2 jobs per GPU
 scheduler = GPUScheduler(n_gpus=4, jobs_per_gpu=2)
 
 # Define your jobs

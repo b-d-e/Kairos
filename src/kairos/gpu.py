@@ -50,17 +50,32 @@ def calculate_memory_percentage(used: float, total: float) -> float:
     return (used / total) * 100
 
 
+def calculate_per_job_memory(total_memory: float, jobs_per_gpu: int) -> float:
+    """Calculate memory threshold per job based on total GPU memory.
+
+    Reserves 95% of total memory divided by number of jobs per GPU.
+
+    Args:
+        total_memory: Total GPU memory in MB
+        jobs_per_gpu: Number of concurrent jobs per GPU
+
+    Returns:
+        Memory threshold in MB per job
+    """
+    return (total_memory * 0.95) / jobs_per_gpu
+
+
 def wait_for_gpu_memory(
     gpu_id: int,
-    threshold: float,
+    jobs_per_gpu: int,
     check_interval: float,
     logger: logging.Logger,
 ):
-    """Wait until GPU memory usage is below threshold.
+    """Wait until GPU has enough free memory for the job.
 
     Args:
         gpu_id: The GPU ID to monitor
-        threshold: Memory usage threshold percentage
+        jobs_per_gpu: Number of concurrent jobs per GPU
         check_interval: Time to wait between checks in seconds
         logger: Logger instance to use for status updates
     """
@@ -70,12 +85,14 @@ def wait_for_gpu_memory(
             logger.error(f"Could not get memory usage for GPU {gpu_id}")
             return
 
-        usage = calculate_memory_percentage(used, total)
-        if usage < threshold:
+        per_job_threshold = calculate_per_job_memory(total, jobs_per_gpu)
+        available_memory = total - used
+
+        if available_memory >= per_job_threshold:
             return
 
         logger.info(
-            f"GPU {gpu_id} memory usage at {usage:.1f}% > \
-                {threshold}%, waiting..."
+            f"GPU {gpu_id} has {available_memory:.1f}MB free, "
+            f"needs {per_job_threshold:.1f}MB, waiting..."
         )
         time.sleep(check_interval)

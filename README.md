@@ -160,7 +160,6 @@ Job(
 scheduler = GPUScheduler(
     n_gpus=4,                # Number of GPUs available
     jobs_per_gpu=2,          # Jobs per GPU
-    memory_threshold=50.0,   # Wait until GPU memory is below this percentage
     check_interval=5.0,      # Seconds between memory checks
     log_dir="logs"           # Directory for log files
 )
@@ -180,15 +179,20 @@ Log files are organised as:
 
 ## Memory Management
 
-The scheduler monitors GPU memory usage and only starts new jobs when:
-1. A GPU slot is available
-2. The GPU's memory usage is below the specified threshold
+The scheduler automatically manages GPU memory allocation to ensure efficient resource utilization:
 
-Memory monitoring features:
-- Configurable memory threshold (default: 50%)
+- Automatically calculates memory thresholds based on GPU capacity and jobs_per_gpu
+- Reserves 95% of total GPU memory for jobs (5% buffer for system overhead)
+- Evenly divides available memory between concurrent jobs
+- Waits for sufficient memory to be available before starting new jobs
 - Configurable check interval (default: 5 seconds)
 - Proper error handling for GPU queries
 - Detailed memory usage logging
+
+For example, on a 24GB GPU with jobs_per_gpu=2:
+- Total usable memory: 22.8GB (95% of 24GB)
+- Memory per job: 11.4GB
+- New jobs wait until at least 11.4GB is available
 
 ## Requirements
 

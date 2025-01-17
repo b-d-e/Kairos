@@ -23,13 +23,11 @@ class GPUScheduler:
         n_gpus: int,
         jobs_per_gpu: int,
         log_dir: str = "logs",
-        memory_threshold: float = 49.0,
         check_interval: float = 5.0,
     ):
         """Initialise the GPU scheduler with specified configuration."""
         self.n_gpus = n_gpus
         self.jobs_per_gpu = jobs_per_gpu
-        self.memory_threshold = memory_threshold
         self.check_interval = check_interval
         self.log_dir = Path(log_dir)
 
@@ -75,7 +73,7 @@ class GPUScheduler:
 
         wait_for_gpu_memory(
             gpu_slot.gpu_id,
-            self.memory_threshold,
+            self.jobs_per_gpu,
             self.check_interval,
             job_logger,
         )

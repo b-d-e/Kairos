@@ -62,7 +62,7 @@ def calculate_per_job_memory(total_memory: float, jobs_per_gpu: int) -> float:
     Returns:
         Memory threshold in MB per job
     """
-    return (total_memory * 0.95) / jobs_per_gpu
+    return (total_memory * 0.98) / jobs_per_gpu
 
 
 def wait_for_gpu_memory(
